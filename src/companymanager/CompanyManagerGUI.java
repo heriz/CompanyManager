@@ -23,6 +23,7 @@ public class CompanyManagerGUI {
     private JButton saveButton;
     private JButton loadButton;
     private JButton addButton;
+    private JButton delButton;
     private JButton sort;
     private JButton setRate;
     private JLabel showButton;
@@ -32,7 +33,8 @@ public class CompanyManagerGUI {
     private JPanel mainWindow;
     private JScrollPane textScroller;
 
-    private final String[] employeeTypes = {"All", "Salaried", "Hourly", "Manager"};
+    private final String[] employeeTypes = 
+    {"All", "Salaried", "Hourly", "Manager"};
 
     private JFrame frame;
 
@@ -45,6 +47,7 @@ public class CompanyManagerGUI {
         saveButton = new JButton("Save");
         loadButton = new JButton("Load");
         addButton = new JButton("Add Employee");
+        delButton = new JButton("Delete Employee");
         showButton = new JLabel("Show Type:  ");
         sort = new JButton("Sort List");
         setRate = new JButton("Set Rate");
@@ -149,13 +152,15 @@ public class CompanyManagerGUI {
                     salariedPanel.add(ratePanel);
 
                     //Create a new JOptionPane with SalariedPanel//
-                    int result = JOptionPane.showConfirmDialog(null, salariedPanel,
-                            "Please input data for new Salaried", JOptionPane.OK_CANCEL_OPTION,
+                    int result = JOptionPane.showConfirmDialog(null,
+                            salariedPanel,
+                            "Please input data for new Salaried",
+                            JOptionPane.OK_CANCEL_OPTION,
                             JOptionPane.PLAIN_MESSAGE);
                     /*
-                    Make sure the user has selected the OK Button & no fields
-                    blank
-                    */
+                     Make sure the user has selected the OK Button & no fields
+                     blank
+                     */
                     if (result == JOptionPane.OK_OPTION
                             && !(nameField.getText().equals(empty))
                             && !(salaryField.getText().equals(empty))
@@ -180,15 +185,17 @@ public class CompanyManagerGUI {
                     hourlyPanel.add(namePanel);
                     hourlyPanel.add(timePanel);
                     hourlyPanel.add(ratePanel);
-                    
-                   //Create a new JOptionPane with hourlyPanel//
-                    int result = JOptionPane.showConfirmDialog(null, hourlyPanel,
-                            "Please input data for new hourly", JOptionPane.OK_CANCEL_OPTION,
+
+                    //Create a new JOptionPane with hourlyPanel//
+                    int result = JOptionPane.showConfirmDialog(null,
+                            hourlyPanel,
+                            "Please input data for new hourly",
+                            JOptionPane.OK_CANCEL_OPTION,
                             JOptionPane.PLAIN_MESSAGE);
                     /*
-                    Make sure the user has selected the OK Button & no fields
-                    blank
-                    */
+                     Make sure the user has selected the OK Button & no fields
+                     blank
+                     */
                     if (result == JOptionPane.OK_OPTION
                             && !(nameField.getText().equals(empty))
                             && !(hoursField.getText().equals(empty))
@@ -212,15 +219,17 @@ public class CompanyManagerGUI {
                     managerPanel.add(namePanel);
                     managerPanel.add(salaryPanel);
                     managerPanel.add(bonusPanel);
-                    
+
                     //Create a new JOptionPane using ManagerPanel//
-                    int result = JOptionPane.showConfirmDialog(null, managerPanel,
-                            "Please input data for new manager", JOptionPane.OK_CANCEL_OPTION,
+                    int result = JOptionPane.showConfirmDialog(null,
+                            managerPanel,
+                            "Please input data for new manager", 
+                            JOptionPane.OK_CANCEL_OPTION,
                             JOptionPane.PLAIN_MESSAGE);
                     /*
-                    Make sure the user has selected the OK Button & no fields
-                    blank
-                    */
+                     Make sure the user has selected the OK Button & no fields
+                     blank
+                     */
                     if (result == JOptionPane.OK_OPTION
                             && !(nameField.getText().equals(empty))
                             && !(salaryField.getText().equals(empty))
@@ -237,6 +246,28 @@ public class CompanyManagerGUI {
             }
         });
         
+        //Create a dialog when the delButton is pressed//
+        delButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                //Create a new panel to hold the elements//
+                JPanel namePanel = new JPanel();
+                namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.X_AXIS));
+                namePanel.add(new JLabel("Enter Name: "));
+                JTextField inputName = new JTextField(10);
+                namePanel.add(inputName);
+                //Create a new JOptionPane with area for emp input//
+                int result = JOptionPane.showConfirmDialog(null, namePanel,
+                        "Input employee name for deletion", 
+                        JOptionPane.OK_CANCEL_OPTION,
+                        JOptionPane.PLAIN_MESSAGE);
+                if (result == JOptionPane.OK_OPTION
+                        && !(inputName.getText().equals(""))) {
+                    list.delEmp(inputName.getText());
+                    empListDisplay.setText(list.printEmplist());
+                }
+            }
+        });
+
         //Create a dialog when the saveButton is pressed//
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
@@ -254,18 +285,18 @@ public class CompanyManagerGUI {
                 if (result == JOptionPane.OK_OPTION
                         && !(inputName.getText().equals(""))) {
                     list.saveEmployeeList(inputName.getText() + ".dat");
-                    empListDisplay.setText("List Saved! \n\n" +
-                            list.printEmplist());
+                    empListDisplay.setText("List Saved! \n\n"
+                            + list.printEmplist());
                 }
                 if (result == JOptionPane.OK_OPTION
-                        && inputName.getText().equals("")){
+                        && inputName.getText().equals("")) {
                     list.saveEmployeeList("*.dat");
-                    empListDisplay.setText("List Saved! \n\n" +
-                            list.printEmplist());
-                } 
+                    empListDisplay.setText("List Saved! \n\n"
+                            + list.printEmplist());
+                }
             }
         });
-        
+
         //Create a dialog from which to choose the file to load//
         loadButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
@@ -273,7 +304,7 @@ public class CompanyManagerGUI {
                 JPanel loadPanel = new JPanel();
                 loadPanel.setLayout(new BoxLayout(loadPanel, BoxLayout.X_AXIS));
                 loadPanel.add(new JLabel("Select Name:"));
-                
+
                 //current folder representation == .//
                 File folder = new File(".");
                 //Create a FilenameFilter based on .dat ending//
@@ -287,19 +318,19 @@ public class CompanyManagerGUI {
                         }
                     }
                 };
-                
+
                 //Get all the files in the current folder ending in .dat//
                 File[] files = folder.listFiles(textFilter);
                 //Create matching string array//
                 String[] filesString = new String[files.length];
                 /*
-                Copy data from file array into string array getting rid of
-                starting ./ using substring function
-                */
+                 Copy data from file array into string array getting rid of
+                 starting ./ using substring function
+                 */
                 for (int i = 0; i < files.length; i++) {
                     filesString[i] = files[i].toString().substring(2);
                 }
-                
+
                 //Use this new string to create a JComboBox for selectino//
                 JComboBox inputName = new JComboBox(filesString);
                 loadPanel.add(inputName);
@@ -308,9 +339,9 @@ public class CompanyManagerGUI {
                         JOptionPane.OK_CANCEL_OPTION,
                         JOptionPane.PLAIN_MESSAGE);
                 /*
-                Make sure that there are files capable of being loaded and 
-                user selected the OK option
-                */
+                 Make sure that there are files capable of being loaded and 
+                 user selected the OK option
+                 */
                 if (result == JOptionPane.OK_OPTION
                         && filesString.length > 0) {
                     //Clear the list//
@@ -323,12 +354,12 @@ public class CompanyManagerGUI {
                         list.add(newList.get(i));
                     }
                     //Set display to show the new list//
-                    empListDisplay.setText("Loaded Successfully! \n\n" +
-                            list.printEmplist());
+                    empListDisplay.setText("Loaded Successfully! \n\n"
+                            + list.printEmplist());
                 }
             }
         });
-        
+
         //Sort the list by either name or salary and refresh display//
         sort.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
@@ -342,18 +373,18 @@ public class CompanyManagerGUI {
                         null,
                         //Default option is salaried//
                         sortStyle, sortStyle[0]);
-                if(s == sortStyle[0]){
+                if (s == sortStyle[0]) {
                     list.sortList(Emplist.NAME);
                     empListDisplay.setText(list.printEmplist());
                 }
-                if(s == sortStyle[1]){
+                if (s == sortStyle[1]) {
                     list.sortList(Emplist.SALARY);
                     empListDisplay.setText(list.printEmplist());
                 }
             }
         }
         );
-       
+
         //Create a new popup which asks for the new overtime rate//
         setRate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
@@ -380,42 +411,45 @@ public class CompanyManagerGUI {
                     //if OK selected and not field not blank, set//
                     if (result == JOptionPane.OK_OPTION
                             && !(hourlyField.getText().equals(""))) {
-                        Double input = Double.parseDouble(hourlyField.getText());
+                        Double input =
+                                Double.parseDouble(hourlyField.getText());
                         list.setHourlyRate(input);
                     }
                     empListDisplay.setText(list.printEmplist());
                 }
                 //if changing the overtime rate for Salaried//
-                if(s == setTypes[1]){
-                //Make new overtime field//
-                JTextField overtimeField = new JTextField(10);
-                JPanel overtimePanel = new JPanel();
-                overtimePanel.add(new JLabel("New Rate:"));
-                overtimePanel.add(overtimeField);
-                //create the new Pane and save the result to see if ok selected//
-                int result
-                        = JOptionPane.showConfirmDialog(null, overtimePanel,
-                                "Please input new overtime rate",
-                                JOptionPane.OK_CANCEL_OPTION);
-                //if ok selected and textfield not blank, set new rate//
-                if (result == JOptionPane.OK_OPTION
-                        && !(overtimeField.getText().equals(""))) {
-                    Double input = Double.parseDouble(overtimeField.getText());
-                    //set using input parsed to double//
-                    list.setOvertimeRate(input);
+                if (s == setTypes[1]) {
+                    //Make new overtime field//
+                    JTextField overtimeField = new JTextField(10);
+                    JPanel overtimePanel = new JPanel();
+                    overtimePanel.add(new JLabel("New Rate:"));
+                    overtimePanel.add(overtimeField);
+                    //create new Pane and save the result to see if ok selected//
+                    int result
+                            = JOptionPane.showConfirmDialog(null, overtimePanel,
+                                    "Please input new overtime rate",
+                                    JOptionPane.OK_CANCEL_OPTION);
+                    //if ok selected and textfield not blank, set new rate//
+                    if (result == JOptionPane.OK_OPTION
+                            && !(overtimeField.getText().equals(""))) {
+                        Double input = 
+                                Double.parseDouble(overtimeField.getText());
+                        //set using input parsed to double//
+                        list.setOvertimeRate(input);
+                    }
+                    empListDisplay.setText(list.printEmplist());
                 }
-                empListDisplay.setText(list.printEmplist());
             }
-        }
         });
-        
+
         //----//-- Set up the layout of all the buttons and fields --//----//
         bottomButtons.setLayout(new BoxLayout(bottomButtons, BoxLayout.X_AXIS));
         bottomButtons.add(saveButton);
         bottomButtons.add(loadButton);
-        bottomButtons.add(addButton);
         bottomButtons.add(sort);
         bottomButtons.add(setRate);
+        bottomButtons.add(addButton);
+        bottomButtons.add(delButton);
 
         topArea.setLayout(new BoxLayout(topArea, BoxLayout.X_AXIS));
         topArea.add(showButton);
@@ -436,12 +470,13 @@ public class CompanyManagerGUI {
 
     /**
      * Just use the main method to generate a new GUI
+     *
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IllegalAccessException,
             UnsupportedLookAndFeelException,
             ClassNotFoundException,
-            InstantiationException  {
+            InstantiationException {
         //Set the look of the UIManager to System//
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         //Create a new CompanyManagerGUI!//

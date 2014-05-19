@@ -67,14 +67,45 @@ public class EmplistTest {
         Salaried s = new Salaried("A", 5000.0, 50.0, 10.0);
         Hourly h = new Hourly("B", 20.0, 15.0);
         Employee e = new Employee("C", 350.0);
+        String startType = h.toString();
         instance.add(s);
         instance.add(h);
         instance.add(e);
         instance.sortList(typeN);
+        String resultNam = instance.get(0).getName();
         assertEquals(instance.get(0).getName(), lowNam);
         instance.sortList(typeS);
-        Double result = instance.get(0).getSalary();
-        assertEquals(result, lowSal);
+        Double resultSal = instance.get(0).getSalary();
+        assertEquals(resultSal, lowSal);
+    }
+    /**
+     * Test of delEmp method, of class Emplist.
+     */
+    
+    @Test
+    public void testDelEmp(){
+        System.out.println("delEmp");
+        Emplist instance = new Emplist();
+        Manager m1 = new Manager("A", 2000.0, 500.0);
+        Manager m2 = new Manager("B", 200.0, 2000.0);
+        Hourly h1 = new Hourly("C", 20.0, 10.0);
+        Hourly h2 = new Hourly("D",100.0, 150.0);
+        Salaried s1 = new Salaried("E", 200.0, 50.0, 15.0);
+        Salaried s2 = new Salaried("F", 300.0, 15.0, 20.0);
+        instance.add(m1);
+        instance.add(m2);
+        instance.add(h1);
+        instance.add(h2);
+        instance.add(s1);
+        instance.add(s2);
+        int expResult = 5;
+        instance.delEmp("A");
+        int result = instance.size();
+        assertEquals(expResult, result);
+        int expResult2 = 4;
+        instance.delEmp("C");
+        int result2 = instance.size();
+        assertEquals(expResult2,result2);
     }
 
     

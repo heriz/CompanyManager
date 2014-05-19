@@ -44,7 +44,6 @@ public class Emplist extends ArrayList<Employee> implements Serializable {
             if (aType == SALARY) {
                 type = SALARY;
             }
-
         }
 
         /**
@@ -61,10 +60,10 @@ public class Emplist extends ArrayList<Employee> implements Serializable {
             if (type == SALARY) //getsalary method is used as this determines actual salary//
             {
                 return emp1.getSalary().compareTo(emp2.getSalary());
-            } else {
+            }
+            else {
                 return 0;
             }
-
         }
         //type will be used to determine type of sorting//
         private int type;
@@ -84,6 +83,18 @@ public class Emplist extends ArrayList<Employee> implements Serializable {
         if (type == SALARY) {
             Comparator<Employee> compBySalary = new EmployeeComparator(type);
             Collections.sort(this, compBySalary);
+        }
+    }
+    
+    /**
+     * Method to delete employee with specified name from list
+     * 
+     * @param aName name of the employee to be deleted
+     */
+    public void delEmp(String aName){
+        for (int i = 0; i < this.size(); i++){
+            if(this.get(i).getName().equals(aName))
+                this.remove(i);
         }
     }
 
