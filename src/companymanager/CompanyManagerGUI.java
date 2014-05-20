@@ -26,11 +26,13 @@ public class CompanyManagerGUI {
     private JButton delButton;
     private JButton sort;
     private JButton setRate;
+    private JButton manage;
     private JLabel showButton;
     private JTextArea empListDisplay;
     private JPanel bottomButtons;
     private JPanel topArea;
     private JPanel mainWindow;
+    private final JPanel selection = new JPanel();
     private JScrollPane textScroller;
 
     private final String[] employeeTypes = 
@@ -51,6 +53,7 @@ public class CompanyManagerGUI {
         showButton = new JLabel("Show Type:  ");
         sort = new JButton("Sort List");
         setRate = new JButton("Set Rate");
+        manage = new JButton("Manage Emp");
         empListDisplay = new JTextArea(35, 45);
         bottomButtons = new JPanel();
         topArea = new JPanel();
@@ -97,9 +100,10 @@ public class CompanyManagerGUI {
                     "Hourly",
                     "Manager"};
                 //----//-- Get a String from the users selection--//----//
-                String s = (String) JOptionPane.showInputDialog(null,
+                int s = JOptionPane.showOptionDialog(null,
                         "Pick a type to add",
                         "Type selector",
+                        JOptionPane.YES_NO_CANCEL_OPTION,
                         JOptionPane.PLAIN_MESSAGE,
                         null,
                         //Default option is salaried//
@@ -141,7 +145,7 @@ public class CompanyManagerGUI {
                 bonusPanel.add(bonusField);
 
                 //If prior selection was "Salaried"//
-                if (s == employees[0]) {
+                if (s == 0) {
                     //Create the new Salaried Panel//
                     JPanel salariedPanel = new JPanel();
                     salariedPanel.setLayout(
@@ -177,7 +181,7 @@ public class CompanyManagerGUI {
                     empListDisplay.setText(list.printEmplist());
                 }
                 //If prior selection was Hourly//
-                if (s == employees[1]) {
+                if (s == 1) {
                     //Create the new hourly Panel//
                     JPanel hourlyPanel = new JPanel();
                     hourlyPanel.setLayout(
@@ -211,7 +215,7 @@ public class CompanyManagerGUI {
                     empListDisplay.setText(list.printEmplist());
                 }
                 //If prior selection was Manager//
-                if (s == employees[2]) {
+                if (s == 2) {
                     //Create the new Manager panel//
                     JPanel managerPanel = new JPanel();
                     managerPanel.setLayout(
@@ -265,6 +269,19 @@ public class CompanyManagerGUI {
                     list.delEmp(inputName.getText());
                     empListDisplay.setText(list.printEmplist());
                 }
+            }
+        });
+        
+        //Manage will consolidate the two options to add and remove employees
+        manage.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent event){
+                selection.setLayout(new FlowLayout(FlowLayout.CENTER));
+                selection.add(addButton);
+                selection.add(delButton);
+                int result = JOptionPane.showConfirmDialog(null, selection,
+                        "Select Action", 
+                        JOptionPane.OK_CANCEL_OPTION,
+                        JOptionPane.PLAIN_MESSAGE);
             }
         });
 
@@ -391,7 +408,7 @@ public class CompanyManagerGUI {
                 String[] setTypes = {"Hourly", "Salaried"};
                 String s = (String) JOptionPane.showInputDialog(null,
                         "Select type of Employee: ",
-                        "Change the Rate for Selected Type",
+                        "Change Rate for Selected",
                         JOptionPane.PLAIN_MESSAGE,
                         null,
                         //Default option is salaried//
@@ -443,13 +460,12 @@ public class CompanyManagerGUI {
         });
 
         //----//-- Set up the layout of all the buttons and fields --//----//
-        bottomButtons.setLayout(new BoxLayout(bottomButtons, BoxLayout.X_AXIS));
+        bottomButtons.setLayout(new FlowLayout(FlowLayout.CENTER));
         bottomButtons.add(saveButton);
         bottomButtons.add(loadButton);
         bottomButtons.add(sort);
         bottomButtons.add(setRate);
-        bottomButtons.add(addButton);
-        bottomButtons.add(delButton);
+        bottomButtons.add(manage);
 
         topArea.setLayout(new BoxLayout(topArea, BoxLayout.X_AXIS));
         topArea.add(showButton);

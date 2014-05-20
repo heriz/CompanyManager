@@ -95,6 +95,8 @@ public class Emplist extends ArrayList<Employee> implements Serializable {
         for (int i = 0; i < this.size(); i++){
             if(this.get(i).getName().equals(aName))
                 this.remove(i);
+            if(aName.equals("*"))
+                this.clear();
         }
     }
 
